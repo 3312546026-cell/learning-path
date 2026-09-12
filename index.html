@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C 语言 → 51 单片机 · 学习任务</title>
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --border: rgba(0,0,0,0.08);
+    --separator: rgba(0,0,0,0.06);
+    --accent: #0071e3;
+    --accent-soft: rgba(0,113,227,0.08);
+    --blue: #0071e3;
+    --orange: #ff6b00;
+    --green: #34c759;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+    --shadow-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 28px rgba(0,0,0,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    text-align: center;
+    padding: 96px 0 72px;
+  }
+  .hero-eyebrow {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 .arrow {
+    color: var(--text-tertiary);
+    font-weight: 300;
+    margin: 0 10px;
+  }
+  .hero h1 .c { color: var(--blue); }
+  .hero h1 .mcu { color: var(--green); }
+  .hero p {
+    font-size: 19px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+
+  /* ===== Section ===== */
+  .section {
+    padding: 56px 0;
+    border-top: 1px solid var(--separator);
+  }
+  .section:first-of-type { border-top: none; }
+  .section-head {
+    margin-bottom: 36px;
+  }
+  .section-head h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .section-head p {
+    font-size: 16px;
+    color: var(--text-secondary);
+  }
+
+  /* ===== 双路径 ===== */
+  .paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .path-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .path-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .path-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.3px;
+  }
+  .path-card.exp .path-badge {
+    background: var(--accent-soft);
+    color: var(--blue);
+  }
+  .path-card.zero .path-badge {
+    background: rgba(255,107,0,0.09);
+    color: var(--orange);
+  }
+  .path-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .path-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .path-list {
+    list-style: none;
+  }
+  .path-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--separator);
+    font-size: 14px;
+  }
+  .path-list li:last-child { border-bottom: none; }
+  .path-list .label {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    min-width: 40px;
+    font-weight: 500;
+  }
+  .path-list .val { color: var(--text); }
+
+  /* ===== 时间轴 ===== */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .step:nth-child(1) .step-num { background: var(--accent-soft); color: var(--blue); }
+  .step:nth-child(2) .step-num { background: rgba(255,107,0,0.09); color: var(--orange); }
+  .step:nth-child(3) .step-num { background: rgba(52,199,89,0.1); color: var(--green); }
+  .step-body h3 {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .step-duration {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .step-goal {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+  .step-tracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .step-track {
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .step-track.exp { background: var(--accent-soft); }
+  .step-track.zero { background: rgba(255,107,0,0.07); }
+  .step-track.common {
+    background: rgba(52,199,89,0.07);
+    grid-column: 1 / -1;
+  }
+  .step-track .track-label {
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .step-track.exp .track-label { color: var(--blue); }
+  .step-track.zero .track-label { color: var(--orange); }
+  .step-track.common .track-label { color: var(--green); }
+  .step-track .track-text { color: var(--text-secondary); }
+
+  /* ===== 资源卡片 ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .card-grid.two-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .res-card {
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .res-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .res-platform {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .res-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    flex: 1;
+    letter-spacing: -0.01em;
+  }
+  .res-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .res-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .tag-c { background: var(--accent-soft); color: var(--blue); }
+  .tag-mcu { background: rgba(52,199,89,0.1); color: var(--green); }
+  .tag-py { background: rgba(255,212,59,0.18); color: #b8860b; }
+  .tag-ref { background: rgba(175,82,222,0.08); color: #af52de; }
+  .tag-practice { background: rgba(255,59,48,0.08); color: #ff3b30; }
+  .tag-tool { background: rgba(0,187,184,0.08); color: #00a3a0; }
+  .tag-exam { background: rgba(255,122,69,0.1); color: #ff7a45; }
+  .res-arrow {
+    color: var(--text-tertiary);
+    font-size: 15px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .res-card:hover .res-arrow {
+    color: var(--accent);
+    transform: translateX(2px);
+  }
+
+  /* ===== Footer ===== */
+  .footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    border-top: 1px solid var(--separator);
+    margin-top: 24px;
+  }
+  .footer p {
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+  .footer code {
+    font-family: "SF Mono", "Menlo", "Consolas", monospace;
+    background: rgba(0,0,0,0.04);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 768px) {
+    .hero { padding: 64px 0 48px; }
+    .section { padding: 40px 0; }
+    .paths { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 1fr; padding: 24px; }
+    .step-tracks { grid-template-columns: 1fr; }
+    .step-track.common { grid-column: auto; }
+    .card-grid.two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">学习任务规划</div>
+    <h1><span class="c">C 语言</span><span class="arrow">→</span><span class="mcu">51 单片机</span></h1>
+    <p>面向两类学生的完整嵌入式入门路线，从语法基础到硬件编程，一条路径走通。</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 双路径 -->
+  <section class="section">
+    <div class="section-head">
+      <h2>选择你的起点</h2>
+      <p>根据现有基础，选择最适合的学习节奏。</p>
+    </div>
+    <div class="paths">
+      <div class="path-card exp">
+        <span class="path-badge">有基础</span>
+        <div class="path-title">快速进阶</div>
+        <p class="path-desc">已掌握至少一门语言的基本语法，可快速回顾 C 语言特性，重点攻克指针与内存模型。</p>
+        <ul class="path-list">
+          <li><span class="label">起步</span><span class="val">直接进入翁恺 C 语言课程</span></li>
+          <li><span class="label">重点</span><span class="val">指针、结构体、内存管理、文件 IO</span></li>
+          <li><span class="label">节奏</span><span class="val">1.5 倍速过基础，暂停做进阶练习</span></li>
+          <li><span class="label">目标</span><span class="val">能独立编写含指针与结构体的 C 程序</span></li>
+        </ul>
+      </div>
+      <div class="path-card zero">
+        <span class="path-badge">零基础</span>
+        <div class="path-title">系统入门</div>
+        <p class="path-desc">从零开始，需要系统建立编程思维，从变量与流程控制一步步打牢地基。</p>
+        <ul class="path-list">
+          <li><span class="label">起步</span><span class="val">从黑马程序员 C 语言全套开始</span></li>
+          <li><span class="label">重点</span><span class="val">数据类型、运算符、循环、函数、数组</span></li>
+          <li><span class="label">节奏</span><span class="val">正常速度跟练，每节配套手写代码</span></li>
+          <li><span class="label">目标</span><span class="val">理解编程逻辑，能读懂并修改基础 C 代码</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 学习路线 -->
+  <section class="section">
+    <div class="section-head">
+      <h2>学习路线</h2>
+      <p>两条路径在第二阶段汇合，共同进入 51 单片机实战。</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>C 语言基础入门</h3>
+          <div class="step-duration">有基础 1~2 周 · 零基础 3~4 周</div>
+          <p class="step-goal">建立 C 语言语法体系，能独立编写、编译和调试简单程序。</p>
+          <div class="step-tracks">
+            <div class="step-track exp">
+              <div class="track-label">有基础路径</div>
+              <div class="track-text">翁恺 C 语言程序设计，快速回顾语法，重点放在指针、结构体、联合体、枚举与内存操作上。每章配合 2~3 道编程题。</div>
+            </div>
+            <div class="step-track zero">
+              <div class="track-label">零基础路径</div>
+              <div class="track-text">黑马程序员 C 语言全套，从变量、数据类型、运算符开始，循序渐进到函数、数组、指针、结构体。每节必须手写代码跟练。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>进阶巩固与小项目</h3>
+          <div class="step-duration">1~2 周</div>
+          <p class="step-goal">通过实战项目把语法转化为编程能力，查漏补缺。</p>
+          <div class="step-tracks">
+            <div class="step-track common">
+              <div class="track-label">共同任务</div>
+              <div class="track-text">完成 2~3 个小项目：学生成绩管理系统（结构体+数组）、简易通讯录（指针+动态内存）、文件读写练习。零基础同学可回看翁恺课程进阶章节补充指针与内存管理内容。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>51 单片机入门实战</h3>
+          <div class="step-duration">2~3 周</div>
+          <p class="step-goal">理解单片机工作原理，能用 C 语言控制硬件外设。</p>
+          <div class="step-tracks">
+            <div class="step-track common">
+              <div class="track-label">共同任务</div>
+              <div class="track-text">跟随 51 单片机入门教程，全程纯手打代码。依次掌握：GPIO 输入输出、LED 与按键、定时器与中断、串口通信、数码管与 LCD、传感器与外设驱动。最终完成一个综合小项目（如智能小车或环境监测仪）。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 视频资源 -->
+  <section class="section">
+    <div class="section-head">
+      <h2>视频课程</h2>
+      <p>点击卡片直达 B 站课程页面。</p>
+    </div>
+    <div class="card-grid">
+      <a class="res-card" href="https://www.bilibili.com/video/BV1dr4y1n7vA" target="_blank" rel="noopener">
+        <div class="res-platform">Bilibili · 浙江大学</div>
+        <div class="res-title">翁恺教你 C 语言程序设计！C 语言基础入门！</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-c">C 语言</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://www.bilibili.com/video/BV1Xa4y1k7LU" target="_blank" rel="noopener">
+        <div class="res-platform">Bilibili · 黑马程序员</div>
+        <div class="res-title">C 语言零基础入门到精通全套视频教程</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-c">C 语言</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://www.bilibili.com/video/BV1Mb411e7re" target="_blank" rel="noopener">
+        <div class="res-platform">Bilibili</div>
+        <div class="res-title">51 单片机入门教程-2020版 程序全程纯手打 从零开始入门</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-mcu">51 单片机</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://www.bilibili.com/video/BV1qW4y1a7fU" target="_blank" rel="noopener">
+        <div class="res-platform">Bilibili · 黑马程序员</div>
+        <div class="res-title">Python 零基础全套教程，8 天从入门到精通</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-py">Python · 拓展</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 练习与参考 -->
+  <section class="section">
+    <div class="section-head">
+      <h2>练习与参考</h2>
+      <p>配合视频学习使用，边学边查、边学边练。</p>
+    </div>
+    <div class="card-grid two-col">
+      <a class="res-card" href="https://www.runoob.com/" target="_blank" rel="noopener">
+        <div class="res-platform">Runoob · 菜鸟教程</div>
+        <div class="res-title">C 语言语法速查与在线编程练习</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-ref">语法参考</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://leetcode.cn/" target="_blank" rel="noopener">
+        <div class="res-platform">LeetCode · 力扣</div>
+        <div class="res-title">算法刷题平台，用 C 语言巩固编程思维</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-practice">算法练习</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 开发工具 -->
+  <section class="section">
+    <div class="section-head">
+      <h2>开发工具</h2>
+      <p>编程环境与配套资源，点击跳转下载。</p>
+    </div>
+    <div class="card-grid two-col">
+      <a class="res-card" href="https://pan.baidu.com/s/1mJQQ79OTlN6o7XBCP17B9A?pwd=6k4h" target="_blank" rel="noopener">
+        <div class="res-platform">百度网盘 · 提取码 6k4h</div>
+        <div class="res-title">Dev-Cpp 5.11 TDM-GCC 4.9.2 Setup</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-tool">C 语言 IDE</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://pan.baidu.com/s/11hK6TBpaqGd62APGutI--A?pwd=1bs9" target="_blank" rel="noopener">
+        <div class="res-platform">百度网盘 · 提取码 1bs9</div>
+        <div class="res-title">2025 下模拟考试系统</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-exam">模拟考试</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://www.jetbrains.com/zh-cn/pycharm/" target="_blank" rel="noopener">
+        <div class="res-platform">JetBrains 官网</div>
+        <div class="res-title">PyCharm 官方下载页面</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-tool">Python IDE</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+      <a class="res-card" href="https://blog.csdn.net/qq_40370687/article/details/128960168" target="_blank" rel="noopener">
+        <div class="res-platform">CSDN 博客</div>
+        <div class="res-title">PyCharm 下载安装图文教程</div>
+        <div class="res-bottom">
+          <span class="res-tag tag-ref">安装指南</span>
+          <span class="res-arrow">→</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>每看完一节立即动手写代码 — <code>printf("Hello, MCU!");</code></p>
+  </footer>
+
+</div>
+</body>
+</html>
