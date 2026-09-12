@@ -1,533 +1,229 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>学习资源地图 · 找到下一步</title>
-<style>
-  :root {
-    --bg: #fbfbfd;
-    --card: #ffffff;
-    --text: #1d1d1f;
-    --text-secondary: #6e6e73;
-    --text-tertiary: #86868b;
-    --border: rgba(0,0,0,0.08);
-    --separator: rgba(0,0,0,0.06);
-    --accent: #0071e3;
-    --accent-soft: rgba(0,113,227,0.08);
-    --blue: #0071e3;
-    --orange: #ff6b00;
-    --green: #34c759;
-    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
-    --shadow-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 28px rgba(0,0,0,0.08);
-    --radius: 16px;
-    --radius-sm: 10px;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .container {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* ===== Hero ===== */
-  .hero {
-    text-align: center;
-    padding: 96px 0 72px;
-  }
-  .hero-eyebrow {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.3px;
-    margin-bottom: 12px;
-  }
-  .hero h1 {
-    font-size: clamp(36px, 6vw, 56px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
-  .hero h1 .arrow {
-    color: var(--text-tertiary);
-    font-weight: 300;
-    margin: 0 10px;
-  }
-  .hero h1 .c { color: var(--blue); }
-  .hero h1 .mcu { color: var(--green); }
-  .hero p {
-    font-size: 19px;
-    color: var(--text-secondary);
-    max-width: 520px;
-    margin: 0 auto;
-    font-weight: 400;
-  }
-
-  /* ===== Section ===== */
-  .section {
-    padding: 56px 0;
-    border-top: 1px solid var(--separator);
-  }
-  .section:first-of-type { border-top: none; }
-  .section-head {
-    margin-bottom: 36px;
-  }
-  .section-head h2 {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: 6px;
-  }
-  .section-head p {
-    font-size: 16px;
-    color: var(--text-secondary);
-  }
-
-  /* ===== 双路径 ===== */
-  .paths {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .path-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 32px;
-    box-shadow: var(--shadow);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-  .path-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
-  }
-  .path-badge {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 16px;
-    letter-spacing: 0.3px;
-  }
-  .path-card.exp .path-badge {
-    background: var(--accent-soft);
-    color: var(--blue);
-  }
-  .path-card.zero .path-badge {
-    background: rgba(255,107,0,0.09);
-    color: var(--orange);
-  }
-  .path-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-  .path-desc {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-    line-height: 1.6;
-  }
-  .path-list {
-    list-style: none;
-  }
-  .path-list li {
-    display: flex;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--separator);
-    font-size: 14px;
-  }
-  .path-list li:last-child { border-bottom: none; }
-  .path-list .label {
-    color: var(--text-tertiary);
-    font-size: 13px;
-    min-width: 40px;
-    font-weight: 500;
-  }
-  .path-list .val { color: var(--text); }
-
-  /* ===== 时间轴 ===== */
-  .steps {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .step {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px 32px;
-    box-shadow: var(--shadow);
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 20px;
-    align-items: start;
-  }
-  .step-num {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-  .step:nth-child(1) .step-num { background: var(--accent-soft); color: var(--blue); }
-  .step:nth-child(2) .step-num { background: rgba(255,107,0,0.09); color: var(--orange); }
-  .step:nth-child(3) .step-num { background: rgba(52,199,89,0.1); color: var(--green); }
-  .step-body h3 {
-    font-size: 19px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    letter-spacing: -0.01em;
-  }
-  .step-duration {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-  .step-goal {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
-  }
-  .step-tracks {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .step-track {
-    padding: 14px 16px;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    line-height: 1.6;
-  }
-  .step-track.exp { background: var(--accent-soft); }
-  .step-track.zero { background: rgba(255,107,0,0.07); }
-  .step-track.common {
-    background: rgba(52,199,89,0.07);
-    grid-column: 1 / -1;
-  }
-  .step-track .track-label {
-    font-weight: 600;
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-  .step-track.exp .track-label { color: var(--blue); }
-  .step-track.zero .track-label { color: var(--orange); }
-  .step-track.common .track-label { color: var(--green); }
-  .step-track .track-text { color: var(--text-secondary); }
-
-  /* ===== 资源卡片 ===== */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-  }
-  .card-grid.two-col {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .res-card {
-    background: var(--card);
-    border-radius: var(--radius-sm);
-    padding: 22px;
-    box-shadow: var(--shadow);
-    text-decoration: none;
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-  .res-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
-  }
-  .res-platform {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-  }
-  .res-title {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.5;
-    margin-bottom: 14px;
-    flex: 1;
-    letter-spacing: -0.01em;
-  }
-  .res-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .res-tag {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 6px;
-  }
-  .tag-c { background: var(--accent-soft); color: var(--blue); }
-  .tag-mcu { background: rgba(52,199,89,0.1); color: var(--green); }
-  .tag-py { background: rgba(255,212,59,0.18); color: #b8860b; }
-  .tag-ref { background: rgba(175,82,222,0.08); color: #af52de; }
-  .tag-practice { background: rgba(255,59,48,0.08); color: #ff3b30; }
-  .tag-tool { background: rgba(0,187,184,0.08); color: #00a3a0; }
-  .tag-exam { background: rgba(255,122,69,0.1); color: #ff7a45; }
-  .res-arrow {
-    color: var(--text-tertiary);
-    font-size: 15px;
-    transition: color 0.2s, transform 0.2s;
-  }
-  .res-card:hover .res-arrow {
-    color: var(--accent);
-    transform: translateX(2px);
-  }
-
-  /* ===== Footer ===== */
-  .footer {
-    text-align: center;
-    padding: 48px 0 64px;
-    border-top: 1px solid var(--separator);
-    margin-top: 24px;
-  }
-  .footer p {
-    font-size: 14px;
-    color: var(--text-tertiary);
-  }
-  .footer code {
-    font-family: "SF Mono", "Menlo", "Consolas", monospace;
-    background: rgba(0,0,0,0.04);
-    padding: 2px 8px;
-    border-radius: 5px;
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-
-  /* ===== 响应式 ===== */
-  @media (max-width: 768px) {
-    .hero { padding: 64px 0 48px; }
-    .section { padding: 40px 0; }
-    .paths { grid-template-columns: 1fr; }
-    .step { grid-template-columns: 1fr; padding: 24px; }
-    .step-tracks { grid-template-columns: 1fr; }
-    .step-track.common { grid-column: auto; }
-    .card-grid.two-col { grid-template-columns: 1fr; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="常用课程、文档、练习、工具和技术社区资源库。">
+  <title>学习资源库 · 常用开发资源收藏</title>
+  <style>
+    :root {
+      --bg: #f7f8fc;
+      --surface: #ffffff;
+      --text: #20232d;
+      --muted: #727887;
+      --soft: #a2a8b5;
+      --line: #e8eaf0;
+      --primary: #5969e8;
+      --primary-soft: #eef0ff;
+      --purple: #8b63d5;
+      --purple-soft: #f2edff;
+      --green: #3d9a76;
+      --green-soft: #eaf8f1;
+      --orange: #dc8945;
+      --orange-soft: #fff1e4;
+      --shadow: 0 16px 42px rgba(46, 55, 95, .08);
+      --shadow-hover: 0 20px 50px rgba(46, 55, 95, .15);
+      --radius: 22px;
+      --radius-sm: 15px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 7% 0%, rgba(105, 122, 245, .14), transparent 27rem),
+        radial-gradient(circle at 95% 10%, rgba(196, 142, 240, .12), transparent 25rem),
+        var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-size: 15px; font-weight: 750; text-decoration: none; }
+    .brand-mark { display: grid; place-items: center; width: 31px; height: 31px; color: #fff; background: linear-gradient(135deg, #687cf0, #966bd6); border-radius: 10px; box-shadow: 0 8px 18px rgba(91, 105, 225, .25); }
+    .top-note { color: var(--soft); font-size: 13px; }
+    .hero { padding: 78px 0 68px; text-align: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 19px; padding: 7px 13px; color: var(--primary); background: var(--primary-soft); border-radius: 999px; font-size: 13px; font-weight: 750; }
+    .eyebrow::before { width: 7px; height: 7px; background: #8290ff; border-radius: 50%; box-shadow: 0 0 0 5px rgba(130, 144, 255, .15); content: ""; }
+    h1 { max-width: 740px; margin: 0 auto 17px; font-size: clamp(40px, 6vw, 68px); line-height: 1.08; letter-spacing: -.06em; }
+    h1 em { color: var(--primary); font-style: normal; }
+    .hero-copy { max-width: 610px; margin: 0 auto; color: var(--muted); font-size: 18px; }
+.slogan { max-width: 650px; margin: 18px auto 0; color: var(--primary); font-size: 15px; font-weight: 700; letter-spacing: .01em; }
+.qq-contact { color: var(--primary); font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.qq-contact:hover { color: #4052d2; text-decoration: underline; }
+    .hero-meta { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; margin-top: 24px; color: var(--soft); font-size: 13px; }
+    .hero-meta span { padding: 7px 11px; background: rgba(255,255,255,.68); border: 1px solid rgba(232,234,240,.9); border-radius: 999px; }
+    .library { padding: 44px 0 70px; }
+    .library-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
+    .kicker { margin-bottom: 7px; color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    h2 { margin: 0; font-size: clamp(26px, 4vw, 36px); line-height: 1.2; letter-spacing: -.04em; }
+    .library-intro { max-width: 510px; margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+    .count { color: var(--soft); font-size: 13px; white-space: nowrap; }
+    .tools { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 19px; }
+    .search { position: relative; flex: 1; max-width: 430px; }
+    .search-icon { position: absolute; top: 50%; left: 16px; color: var(--soft); transform: translateY(-50%); font-size: 19px; }
+    .search input { width: 100%; height: 48px; padding: 0 17px 0 44px; color: var(--text); background: rgba(255,255,255,.82); border: 1px solid var(--line); border-radius: 14px; outline: none; }
+    .search input:focus { border-color: #aab4ff; box-shadow: 0 0 0 4px var(--primary-soft); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter { padding: 8px 14px; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; font-size: 13px; transition: .2s ease; }
+    .filter:hover, .filter.active { color: var(--primary); background: var(--primary-soft); border-color: transparent; }
+    .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .resource { display: flex; min-height: 205px; flex-direction: column; padding: 21px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); text-decoration: none; transition: .22s ease; }
+    .resource:hover { border-color: #d4d9ff; box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+    .resource-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
+    .source { overflow: hidden; color: var(--soft); font-size: 11px; font-weight: 800; letter-spacing: .07em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+    .tag { flex: 0 0 auto; padding: 4px 9px; color: var(--primary); background: var(--primary-soft); border-radius: 7px; font-size: 11px; font-weight: 750; }
+    .resource:nth-child(4n + 2) .tag { color: var(--purple); background: var(--purple-soft); }
+    .resource:nth-child(4n + 3) .tag { color: var(--green); background: var(--green-soft); }
+    .resource:nth-child(4n) .tag { color: var(--orange); background: var(--orange-soft); }
+    .resource h3 { margin: 0 0 9px; font-size: 16px; line-height: 1.45; letter-spacing: -.015em; }
+    .resource p { flex: 1; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .more { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; color: var(--soft); font-size: 13px; }
+    .resource:hover .more { color: var(--primary); }
+    .empty { display: none; padding: 38px 20px; color: var(--muted); text-align: center; background: rgba(255,255,255,.72); border: 1px dashed #d8dce7; border-radius: var(--radius-sm); }
+    .empty.show { display: block; }
+    footer { padding: 0 0 65px; color: var(--soft); text-align: center; font-size: 13px; }
+    footer strong { color: var(--primary); font-weight: 700; }
+    @media (max-width: 860px) { .resource-grid { grid-template-columns: repeat(2, 1fr); } .tools { align-items: stretch; flex-direction: column; } .search { max-width: none; } }
+    @media (max-width: 560px) { .wrap { width: min(100% - 28px, 1120px); } .top-note { display: none; } .hero { padding: 58px 0 46px; } .hero-copy { font-size: 16px; } .library { padding-top: 30px; } .library-head { align-items: start; flex-direction: column; gap: 5px; } .resource-grid { grid-template-columns: 1fr; } .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; } .filter { flex: 0 0 auto; } }
+  </style>
 </head>
 <body>
+  <header class="wrap topbar">
+    <a class="brand" href="#"><span class="brand-mark">✦</span>学习资源库</a>
+    <a class="qq-contact" href="https://wpa.qq.com/msgrd?v=3&uin=3312546026&site=qq&menu=yes" target="_blank" rel="noopener">QQ：3312546026</a>
+  </header>
 
-<!-- Hero -->
-<header class="hero">
-  <div class="container">
-    <div class="hero-eyebrow">学习资源导航</div>
-    <h1><span class="c">找到方向</span><span class="arrow">·</span><span class="mcu">开始学习</span></h1>
-    <p>把课程、练习、参考和工具整理在一起，按你的兴趣与目标，找到当下最值得开始的下一步。</p>
-  </div>
-</header>
-
-<div class="container">
-
-  <!-- 学习方向 -->
-  <section class="section">
-    <div class="section-head">
-      <h2>从一个方向开始</h2>
-      <p>不需要一次决定未来，先选一个当下愿意花时间了解的主题。</p>
-    </div>
-    <div class="paths">
-      <div class="path-card exp">
-        <span class="path-badge">编程基础</span>
-        <div class="path-title">建立能迁移的能力</div>
-        <p class="path-desc">从语法、逻辑和小练习开始，逐渐学会拆解问题、写出代码并验证想法。</p>
-        <ul class="path-list">
-          <li><span class="label">适合</span><span class="val">想系统入门，或重新整理基础的人</span></li>
-          <li><span class="label">内容</span><span class="val">C 语言、Python、算法与编程思维</span></li>
-          <li><span class="label">方法</span><span class="val">看一小节，马上完成一个小练习</span></li>
-          <li><span class="label">目标</span><span class="val">能读懂、修改并独立写出基础程序</span></li>
-        </ul>
-      </div>
-      <div class="path-card zero">
-        <span class="path-badge">项目实践</span>
-        <div class="path-title">把知识变成作品</div>
-        <p class="path-desc">从真实问题和动手实验出发，让学习不只停留在“看过”，而是留下可以复盘的结果。</p>
-        <ul class="path-list">
-          <li><span class="label">适合</span><span class="val">想做项目，或喜欢边做边学的人</span></li>
-          <li><span class="label">内容</span><span class="val">刷题、硬件、自动化与综合小项目</span></li>
-          <li><span class="label">方法</span><span class="val">先做最小版本，再逐步增加功能</span></li>
-          <li><span class="label">目标</span><span class="val">完成一个能展示、能解释的学习成果</span></li>
-        </ul>
-      </div>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Resource Library</div>
+      <h1>学习资源，<em>随用随查</em></h1>
+      <p class="hero-copy">课程、官方文档、练习平台、开发工具和技术社区，按分类整理在一起，需要什么就搜索什么。</p>
+<p class="slogan">想系统学编程，就从 C 语言开始——打好基础，读懂代码，开启你的编程之路。</p>
+      <div class="hero-meta"><span>课程与教程</span><span>文档与参考</span><span>练习与项目</span><span>工具与社区</span></div>
     </div>
   </section>
 
-  <!-- 学习方法 -->
-  <section class="section">
-    <div class="section-head">
-      <h2>一个轻量的学习节奏</h2>
-      <p>把资源网站当成地图，不是待办清单；每次只走好眼前的一小步。</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <h3>先选一个小主题</h3>
-          <div class="step-duration">10 分钟</div>
-          <p class="step-goal">从感兴趣或当前用得上的内容开始，不必先设计一条完美路线。</p>
-          <div class="step-tracks"><div class="step-track exp"><div class="track-label">可以从这里开始</div><div class="track-text">语法基础、Python、算法、硬件、开发工具，任选一个入口。</div></div><div class="step-track zero"><div class="track-label">给自己一个边界</div><div class="track-text">只决定今天看哪一节、做哪一道题或完成哪一个小实验。</div></div></div>
+  <main class="wrap">
+    <section class="library" id="resources">
+      <div class="library-head">
+        <div><div class="kicker">Collection</div><h2>常用资源</h2><p class="library-intro">不设固定路线，按你当前的任务和兴趣挑选一个资源即可。</p></div>
+        <div class="count"><span id="visibleCount">20</span> / 20 项资源</div>
+      </div>
+      <div class="tools">
+        <label class="search"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="搜索资源、主题或平台" aria-label="搜索资源"></label>
+        <div class="filters" aria-label="资源分类">
+          <button class="filter active" type="button" data-filter="全部">全部</button>
+          <button class="filter" type="button" data-filter="课程">课程</button>
+          <button class="filter" type="button" data-filter="文档">文档</button>
+          <button class="filter" type="button" data-filter="练习">练习</button>
+          <button class="filter" type="button" data-filter="工具">工具</button>
+          <button class="filter" type="button" data-filter="社区">社区</button>
         </div>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <h3>输入之后马上动手</h3>
-          <div class="step-duration">30~60 分钟</div>
-          <p class="step-goal">把看懂变成做过：跟写代码、修改示例、完成练习，留下一个可以运行的结果。</p>
-          <div class="step-tracks"><div class="step-track common"><div class="track-label">小项目思路</div><div class="track-text">成绩管理、通讯录、算法题、自动化脚本、LED 与按键实验都可以成为练习。项目不用大，但要能解释自己做了什么。</div></div></div>
-        </div>
+
+      <div class="resource-grid" id="resourceGrid">
+        <a class="resource" href="https://www.bilibili.com/video/BV1dr4y1n7vA" target="_blank" rel="noopener" data-tags="课程 基础 C语言 编程 Bilibili">
+          <div class="resource-top"><span class="source">Bilibili · 浙江大学</span><span class="tag">课程</span></div><h3>翁恺教你 C 语言程序设计</h3><p>系统梳理语法和编程思维，适合入门与基础查漏补缺。</p><div class="more"><span>视频课程</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.bilibili.com/video/BV1Xa4y1k7LU" target="_blank" rel="noopener" data-tags="课程 基础 C语言 编程 Bilibili">
+          <div class="resource-top"><span class="source">Bilibili · 黑马程序员</span><span class="tag">课程</span></div><h3>C 语言零基础入门到精通</h3><p>章节清晰、跟练完整，适合从零建立自己的代码练习。</p><div class="more"><span>视频课程</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.bilibili.com/video/BV1qW4y1a7fU" target="_blank" rel="noopener" data-tags="课程 拓展 Python 编程 Bilibili">
+          <div class="resource-top"><span class="source">Bilibili · 黑马程序员</span><span class="tag">课程</span></div><h3>Python 零基础全套教程</h3><p>从脚本、数据处理到自动化，作为新的探索入口很合适。</p><div class="more"><span>视频课程</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.bilibili.com/video/BV1Mb411e7re" target="_blank" rel="noopener" data-tags="课程 实践 硬件 单片机 Bilibili">
+          <div class="resource-top"><span class="source">Bilibili</span><span class="tag">课程</span></div><h3>51 单片机入门教程</h3><p>从 GPIO、按键到定时器和串口，把代码连接到真实实验。</p><div class="more"><span>动手课程</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://developer.mozilla.org/zh-CN/" target="_blank" rel="noopener" data-tags="文档 基础 Web HTML CSS JavaScript Mozilla">
+          <div class="resource-top"><span class="source">Mozilla · MDN</span><span class="tag">文档</span></div><h3>MDN Web Docs</h3><p>HTML、CSS、JavaScript 和 Web API 的权威参考与学习文档。</p><div class="more"><span>Web 文档</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://docs.python.org/zh-cn/3/" target="_blank" rel="noopener" data-tags="文档 基础 Python 官方">
+          <div class="resource-top"><span class="source">Python.org</span><span class="tag">文档</span></div><h3>Python 中文官方文档</h3><p>查语法、标准库和语言特性，学习与开发时随手参考。</p><div class="more"><span>官方文档</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://devdocs.io/" target="_blank" rel="noopener" data-tags="文档 参考 Web API 编程">
+          <div class="resource-top"><span class="source">DevDocs</span><span class="tag">文档</span></div><h3>DevDocs 多语言文档</h3><p>把多种开发文档集中在一个界面中，适合快速查 API。</p><div class="more"><span>文档聚合</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://git-scm.com/doc" target="_blank" rel="noopener" data-tags="文档 工具 Git 协作 官方">
+          <div class="resource-top"><span class="source">Git SCM</span><span class="tag">文档</span></div><h3>Git 官方文档</h3><p>版本控制、分支、提交和协作流程的官方参考资料。</p><div class="more"><span>版本控制</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://leetcode.cn/" target="_blank" rel="noopener" data-tags="练习 算法 编程 中文 力扣">
+          <div class="resource-top"><span class="source">LeetCode · 力扣</span><span class="tag">练习</span></div><h3>算法与编程练习</h3><p>训练拆解问题、验证思路和表达代码的能力。</p><div class="more"><span>练习平台</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.freecodecamp.org/learn/" target="_blank" rel="noopener" data-tags="练习 课程 Web JavaScript Python 英语">
+          <div class="resource-top"><span class="source">freeCodeCamp</span><span class="tag">练习</span></div><h3>freeCodeCamp 互动课程</h3><p>边学边练，覆盖 Web、数据分析和机器学习等主题。</p><div class="more"><span>互动练习</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.hackerrank.com/domains" target="_blank" rel="noopener" data-tags="练习 算法 Python C语言 SQL 英语">
+          <div class="resource-top"><span class="source">HackerRank</span><span class="tag">练习</span></div><h3>HackerRank 编程练习</h3><p>按语言和主题刷题，适合巩固语法、算法与 SQL。</p><div class="more"><span>在线刷题</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://exercism.org/" target="_blank" rel="noopener" data-tags="练习 编程 Python C语言 代码 英语">
+          <div class="resource-top"><span class="source">Exercism</span><span class="tag">练习</span></div><h3>Exercism 编程训练</h3><p>通过短题目练习多种语言，并获得社区反馈与代码建议。</p><div class="more"><span>代码练习</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.runoob.com/" target="_blank" rel="noopener" data-tags="文档 练习 基础 C语言 Python Web 中文">
+          <div class="resource-top"><span class="source">Runoob · 菜鸟教程</span><span class="tag">文档</span></div><h3>菜鸟教程</h3><p>快速查阅 C、Python、Web、数据库等常见基础知识。</p><div class="more"><span>中文教程</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://code.visualstudio.com/" target="_blank" rel="noopener" data-tags="工具 编辑器 编程 Microsoft">
+          <div class="resource-top"><span class="source">Microsoft</span><span class="tag">工具</span></div><h3>Visual Studio Code</h3><p>轻量、扩展丰富的代码编辑器，适合日常学习和开发。</p><div class="more"><span>代码编辑器</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://www.jetbrains.com/zh-cn/pycharm/" target="_blank" rel="noopener" data-tags="工具 Python 编辑器 JetBrains">
+          <div class="resource-top"><span class="source">JetBrains</span><span class="tag">工具</span></div><h3>PyCharm 官方下载</h3><p>为 Python 学习准备编辑、运行和项目管理环境。</p><div class="more"><span>开发工具</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://docs.docker.com/get-started/" target="_blank" rel="noopener" data-tags="工具 拓展 Docker 部署 官方">
+          <div class="resource-top"><span class="source">Docker Docs</span><span class="tag">工具</span></div><h3>Docker 入门指南</h3><p>了解容器、镜像和服务，为项目部署准备基础知识。</p><div class="more"><span>开发与部署</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://learning.postman.com/" target="_blank" rel="noopener" data-tags="工具 练习 API 接口 Postman">
+          <div class="resource-top"><span class="source">Postman</span><span class="tag">工具</span></div><h3>Postman Learning Center</h3><p>调试接口、保存请求和编写 API 测试，适合接口联调。</p><div class="more"><span>API 工具</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://github.com/skills" target="_blank" rel="noopener" data-tags="社区 练习 GitHub 协作 实践">
+          <div class="resource-top"><span class="source">GitHub Skills</span><span class="tag">社区</span></div><h3>GitHub 实操课程</h3><p>通过真实仓库练习 Issues、Actions、Pages 等协作能力。</p><div class="more"><span>动手课程</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://stackoverflow.com/" target="_blank" rel="noopener" data-tags="社区 问题 编程 英语 Stack Overflow">
+          <div class="resource-top"><span class="source">Stack Overflow</span><span class="tag">社区</span></div><h3>Stack Overflow</h3><p>搜索真实开发问题，练习阅读上下文、验证答案和定位原因。</p><div class="more"><span>问题社区</span><span>↗</span></div>
+        </a>
+        <a class="resource" href="https://juejin.cn/" target="_blank" rel="noopener" data-tags="社区 中文 编程 技术文章">
+          <div class="resource-top"><span class="source">稀土掘金</span><span class="tag">社区</span></div><h3>掘金技术社区</h3><p>阅读中文技术文章、项目经验和工具实践，发现新的主题。</p><div class="more"><span>中文社区</span><span>↗</span></div>
+        </a>
       </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h3>复盘，再决定下一步</h3>
-          <div class="step-duration">每周一次</div>
-          <p class="step-goal">保留真正帮助过你的资源，记录卡住的地方，再选择继续深入还是换一个方向探索。</p>
-          <div class="step-tracks"><div class="step-track common"><div class="track-label">学习不是直线</div><div class="track-text">从基础转向项目、从代码转向工具，或者暂时换个主题，都不算绕路。能持续探索，本身就是很好的能力。</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- 视频资源 -->
-  <section class="section">
-    <div class="section-head">
-      <h2>精选资源</h2>
-      <p>课程是入口，练习、参考和工具帮助你把兴趣继续下去。</p>
-    </div>
-    <div class="card-grid">
-      <a class="res-card" href="https://www.bilibili.com/video/BV1dr4y1n7vA" target="_blank" rel="noopener">
-        <div class="res-platform">Bilibili · 浙江大学</div>
-        <div class="res-title">翁恺教你 C 语言程序设计！C 语言基础入门！</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-c">C 语言</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://www.bilibili.com/video/BV1Xa4y1k7LU" target="_blank" rel="noopener">
-        <div class="res-platform">Bilibili · 黑马程序员</div>
-        <div class="res-title">C 语言零基础入门到精通全套视频教程</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-c">C 语言</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://www.bilibili.com/video/BV1Mb411e7re" target="_blank" rel="noopener">
-        <div class="res-platform">Bilibili</div>
-        <div class="res-title">51 单片机入门教程-2020版 程序全程纯手打 从零开始入门</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-mcu">51 单片机</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://www.bilibili.com/video/BV1qW4y1a7fU" target="_blank" rel="noopener">
-        <div class="res-platform">Bilibili · 黑马程序员</div>
-        <div class="res-title">Python 零基础全套教程，8 天从入门到精通</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-py">Python · 拓展</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-    </div>
-  </section>
+      <div class="empty" id="empty">没有找到匹配的资源，换一个关键词或分类试试。</div>
+    </section>
+  </main>
 
-  <!-- 练习与参考 -->
-  <section class="section">
-    <div class="section-head">
-      <h2>练习与参考</h2>
-      <p>配合视频学习使用，边学边查、边学边练。</p>
-    </div>
-    <div class="card-grid two-col">
-      <a class="res-card" href="https://www.runoob.com/" target="_blank" rel="noopener">
-        <div class="res-platform">Runoob · 菜鸟教程</div>
-        <div class="res-title">C 语言语法速查与在线编程练习</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-ref">语法参考</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://leetcode.cn/" target="_blank" rel="noopener">
-        <div class="res-platform">LeetCode · 力扣</div>
-        <div class="res-title">算法刷题平台，用 C 语言巩固编程思维</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-practice">算法练习</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-    </div>
-  </section>
+  <footer><div class="wrap">收藏常用资源，让每一次学习都更顺手。<strong> · Keep exploring.</strong></div></footer>
 
-  <!-- 开发工具 -->
-  <section class="section">
-    <div class="section-head">
-      <h2>工具与配套</h2>
-      <p>准备好合适的环境，让每一次练习都更顺手。</p>
-    </div>
-    <div class="card-grid two-col">
-      <a class="res-card" href="https://pan.baidu.com/s/1mJQQ79OTlN6o7XBCP17B9A?pwd=6k4h" target="_blank" rel="noopener">
-        <div class="res-platform">百度网盘 · 提取码 6k4h</div>
-        <div class="res-title">Dev-Cpp 5.11 TDM-GCC 4.9.2 Setup</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-tool">C 语言 IDE</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://pan.baidu.com/s/11hK6TBpaqGd62APGutI--A?pwd=1bs9" target="_blank" rel="noopener">
-        <div class="res-platform">百度网盘 · 提取码 1bs9</div>
-        <div class="res-title">2025 下模拟考试系统</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-exam">模拟考试</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://www.jetbrains.com/zh-cn/pycharm/" target="_blank" rel="noopener">
-        <div class="res-platform">JetBrains 官网</div>
-        <div class="res-title">PyCharm 官方下载页面</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-tool">Python IDE</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-      <a class="res-card" href="https://blog.csdn.net/qq_40370687/article/details/128960168" target="_blank" rel="noopener">
-        <div class="res-platform">CSDN 博客</div>
-        <div class="res-title">PyCharm 下载安装图文教程</div>
-        <div class="res-bottom">
-          <span class="res-tag tag-ref">安装指南</span>
-          <span class="res-arrow">→</span>
-        </div>
-      </a>
-    </div>
-  </section>
+  <script>
+    const cards = [...document.querySelectorAll('.resource')];
+    const filters = [...document.querySelectorAll('.filter')];
+    const search = document.querySelector('#search');
+    const empty = document.querySelector('#empty');
+    const visibleCount = document.querySelector('#visibleCount');
+    let activeFilter = '全部';
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>慢一点也没关系，先开始就好。</p>
-  </footer>
+    function applyFilter() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach((card) => {
+        const text = card.textContent.toLowerCase();
+        const tags = (card.dataset.tags || '').toLowerCase();
+        const matchFilter = activeFilter === '全部' || tags.includes(activeFilter.toLowerCase());
+        const matchSearch = !query || text.includes(query) || tags.includes(query);
+        const show = matchFilter && matchSearch;
+        card.style.display = show ? 'flex' : 'none';
+        if (show) visible += 1;
+      });
+      visibleCount.textContent = visible;
+      empty.classList.toggle('show', visible === 0);
+    }
 
-</div>
+    filters.forEach((button) => button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter;
+      filters.forEach((item) => item.classList.toggle('active', item === button));
+      applyFilter();
+    }));
+    search.addEventListener('input', applyFilter);
+  </script>
 </body>
 </html>
