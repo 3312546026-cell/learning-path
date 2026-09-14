@@ -1,32 +1,25 @@
-# 学习路线 AI 助手部署说明
+# 学习路线 AI 助手
 
-网页已经内置“学习路线 AI 助手”，默认使用本地知识库回答，不配置密钥也能正常使用。
+当前网页已切换为纯在线 AI 模式，使用 Puter.js 的在线 `puter.ai.chat()`，不调用本机模型，也不把 API Key 写入网页。
 
-## 接入在线免费文本 AI
+## 使用方式
 
-本项目提供 `ai-worker.js`，用于部署到 Cloudflare Workers，并通过 Gemini API 转发请求。不要把 Gemini 密钥写进 `index.html`。
+打开网站后，点击右下角“问问 AI 助手”。首次使用时，Puter 可能要求用户登录或授权；具体免费额度、模型和限额以 Puter 当前平台规则为准。
 
-1. 在 Google AI Studio 创建 Gemini API Key。
-2. 安装并登录 Wrangler：
+网页依赖：
 
-```bash
-npm install -g wrangler
-wrangler login
+```html
+<script src="https://js.puter.com/v2/"></script>
 ```
 
-3. 在当前目录部署 Worker：
-
-```bash
-wrangler deploy ai-worker.js --name learning-path-ai
-wrangler secret put GEMINI_API_KEY --name learning-path-ai
-```
-
-4. 将 `ai-config.js` 中的地址改成 Worker 地址：
+在线调用：
 
 ```js
-window.AI_ASSISTANT_ENDPOINT = 'https://learning-path-ai.<你的账号>.workers.dev';
+const result = await puter.ai.chat(messages, {
+  normalize: true,
+  temperature: 0.45,
+  max_tokens: 800
+});
 ```
 
-5. 提交 `ai-config.js` 和网页文件，重新打开网站即可。
-
-`GEMINI_MODEL` 可在 Worker 环境变量中覆盖，默认值为 `gemini-2.5-flash`。免费额度和速率限制以服务商当前规则为准。
+如果 Puter 在线 SDK 不可用，页面只提示在线服务暂不可用，不会退回本机模型或本地知识库。
