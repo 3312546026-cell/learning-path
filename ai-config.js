@@ -1,0 +1,1 @@
+window.AI_ASSISTANT_ENDPOINT = '';
