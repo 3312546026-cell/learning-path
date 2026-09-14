@@ -119,12 +119,60 @@
     footer strong { color: var(--blue); }
     @media (max-width: 880px) { .resource-grid { grid-template-columns: repeat(2, 1fr); } .project-grid { grid-template-columns: 1fr; } .tools { align-items: stretch; flex-direction: column; } .search { max-width: none; } }
     @media (max-width: 650px) { .wrap { width: min(100% - 28px, 1120px); } .hero { padding: 57px 0 48px; } .hero-copy { font-size: 16px; } .section { padding: 42px 0; } .section-head { align-items: flex-start; flex-direction: column; gap: 5px; } .route-grid, .resource-grid { grid-template-columns: 1fr; } .route-card-head { padding: 21px 20px 17px; } .route-list { padding: 8px 20px 17px; } .topbar { padding: 19px 0; } .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; } .filter { flex: 0 0 auto; } }
+
+    .ai-section { position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(242, 239, 255, .96), rgba(239, 246, 255, .94)); border: 1px solid #e2e4f4; border-radius: var(--radius); }
+    .ai-section::after { position: absolute; right: -90px; bottom: -125px; width: 310px; height: 310px; border: 1px solid rgba(130, 109, 225, .18); border-radius: 50%; box-shadow: 0 0 0 24px rgba(130, 109, 225, .05), 0 0 0 48px rgba(130, 109, 225, .04); content: ""; pointer-events: none; }
+    .ai-section-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 30px; padding: 30px; }
+    .ai-kicker { color: #765bd4; }
+    .ai-copy { max-width: 650px; margin: 9px 0 0; color: var(--muted); font-size: 15px; }
+    .ai-points { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 17px; }
+    .ai-point { padding: 7px 10px; color: #6753af; background: rgba(255,255,255,.68); border: 1px solid rgba(135, 111, 221, .18); border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .ai-preview { justify-self: end; width: min(100%, 330px); padding: 18px; background: rgba(255,255,255,.78); border: 1px solid rgba(135, 111, 221, .18); border-radius: 18px; box-shadow: 0 16px 35px rgba(86, 74, 155, .1); }
+    .ai-preview-top { display: flex; align-items: center; gap: 10px; padding-bottom: 13px; border-bottom: 1px solid rgba(135, 111, 221, .13); }
+    .ai-orb { display: grid; place-items: center; width: 36px; height: 36px; color: #fff; background: linear-gradient(135deg, #7567ea, #a477df); border-radius: 12px; font-size: 17px; box-shadow: 0 8px 18px rgba(111, 96, 213, .22); }
+    .ai-preview-title { font-size: 14px; font-weight: 800; }
+    .ai-preview-status { margin-top: 1px; color: #7d8391; font-size: 11px; }
+    .ai-bubble { margin-top: 14px; padding: 11px 12px; color: #5f6171; background: #f7f5ff; border-radius: 12px 12px 12px 3px; font-size: 12px; }
+    .ai-bubble.user { margin-left: 38px; color: #fff; background: #7666e8; border-radius: 12px 12px 3px 12px; }
+    .ai-resource-head { margin-top: 38px; }
+    .ai-resource-head .section-intro { max-width: 720px; }
+    .ai-resource-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .ai-resource { min-height: 182px; }
+    .ai-resource .tag { color: #765bd4; background: #f1edff; }
+    .ai-assistant-launcher { position: fixed; right: 24px; bottom: 24px; z-index: 20; display: inline-flex; align-items: center; gap: 9px; min-height: 50px; padding: 0 16px 0 11px; color: #fff; background: linear-gradient(135deg, #6f63e9, #986bd6); border: 0; border-radius: 999px; box-shadow: 0 14px 30px rgba(84, 73, 184, .3); cursor: pointer; font-size: 13px; font-weight: 800; transition: .22s ease; }
+    .ai-assistant-launcher:hover { transform: translateY(-3px); box-shadow: 0 18px 34px rgba(84, 73, 184, .38); }
+    .ai-assistant-launcher .ai-orb { width: 29px; height: 29px; background: rgba(255,255,255,.18); box-shadow: none; font-size: 14px; }
+    .assistant-panel { position: fixed; right: 24px; bottom: 88px; z-index: 21; display: flex; width: min(410px, calc(100vw - 28px)); max-height: min(680px, calc(100vh - 112px)); flex-direction: column; overflow: hidden; background: rgba(255,255,255,.97); border: 1px solid #dedff0; border-radius: 22px; box-shadow: 0 24px 70px rgba(48, 44, 97, .2); opacity: 0; pointer-events: none; transform: translateY(14px) scale(.98); transition: .2s ease; }
+    .assistant-panel.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    .assistant-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 18px; color: #fff; background: linear-gradient(135deg, #655ddd, #936bd4); }
+    .assistant-heading { display: flex; align-items: center; gap: 10px; }
+    .assistant-heading .ai-orb { width: 36px; height: 36px; background: rgba(255,255,255,.16); box-shadow: none; }
+    .assistant-name { font-size: 15px; font-weight: 850; }
+    .assistant-status { margin-top: 1px; color: rgba(255,255,255,.72); font-size: 11px; }
+    .assistant-close { display: grid; place-items: center; width: 32px; height: 32px; color: rgba(255,255,255,.86); background: rgba(255,255,255,.12); border: 0; border-radius: 10px; cursor: pointer; font-size: 20px; line-height: 1; }
+    .assistant-close:hover { background: rgba(255,255,255,.2); }
+    .assistant-messages { display: flex; min-height: 210px; flex: 1; flex-direction: column; gap: 12px; overflow-y: auto; padding: 17px; background: #fbfbfe; }
+    .assistant-message { max-width: 88%; padding: 11px 13px; color: #575b6a; background: #fff; border: 1px solid #ececf4; border-radius: 14px 14px 14px 4px; font-size: 13px; line-height: 1.65; white-space: pre-wrap; }
+    .assistant-message.user { align-self: flex-end; color: #fff; background: #7163e6; border-color: transparent; border-radius: 14px 14px 4px 14px; }
+    .assistant-message.typing { color: #8a839f; font-style: italic; }
+    .assistant-suggestions { display: flex; flex-wrap: wrap; gap: 7px; padding: 12px 17px 0; background: #fbfbfe; }
+    .assistant-suggestion { padding: 7px 10px; color: #6d5ac8; background: #f2efff; border: 1px solid #e6e0ff; border-radius: 999px; cursor: pointer; font-size: 11px; }
+    .assistant-suggestion:hover { background: #e9e3ff; }
+    .assistant-composer { display: flex; align-items: flex-end; gap: 9px; padding: 13px 17px 15px; background: #fff; border-top: 1px solid #ececf4; }
+    .assistant-input { min-height: 42px; max-height: 110px; flex: 1; padding: 10px 12px; color: var(--text); background: #f7f7fb; border: 1px solid #e8e8f0; border-radius: 12px; outline: none; resize: none; font-size: 13px; line-height: 1.45; }
+    .assistant-input:focus { border-color: #b2a6f1; box-shadow: 0 0 0 3px #f0edff; }
+    .assistant-send { display: grid; place-items: center; width: 42px; height: 42px; flex: 0 0 auto; color: #fff; background: #7163e6; border: 0; border-radius: 12px; cursor: pointer; font-size: 17px; }
+    .assistant-send:hover { background: #5e50d1; }
+    .assistant-send:disabled { opacity: .55; cursor: wait; }
+    .assistant-footnote { padding: 0 17px 13px; color: #a1a3af; background: #fff; font-size: 10px; text-align: center; }
+    @media (max-width: 880px) { .ai-resource-grid { grid-template-columns: repeat(2, 1fr); } .ai-section-inner { grid-template-columns: 1fr; } .ai-preview { justify-self: start; } }
+    @media (max-width: 650px) { .ai-section-inner { padding: 22px 20px; } .ai-resource-grid { grid-template-columns: 1fr; } .ai-assistant-launcher { right: 14px; bottom: 14px; } .assistant-panel { right: 14px; bottom: 76px; } }
   </style>
 </head>
 <body>
   <header class="wrap topbar">
     <a class="brand" href="#top"><span class="brand-mark">✦</span>上下位机学习路线</a>
-    <a class="qq" href="https://wpa.qq.com/msgrd?v=3&uin=3312546026&site=qq&menu=yes" target="_blank" rel="noopener">QQ：3312546026</a>
+    <div style="display:flex;align-items:center;gap:16px"><a class="qq" href="#ai-tools">AI 工具</a><a class="qq" href="https://wpa.qq.com/msgrd?v=3&uin=3312546026&site=qq&menu=yes" target="_blank" rel="noopener">QQ：3312546026</a></div>
   </header>
 
   <section class="hero" id="top">
@@ -167,6 +215,24 @@
       </div>
     </section>
 
+
+    <section class="section" id="ai-tools">
+      <div class="ai-section">
+        <div class="ai-section-inner">
+          <div>
+            <div class="kicker ai-kicker">AI Guide</div>
+            <h2>遇到问题，先问一下 AI</h2>
+            <p class="ai-copy">学习路线 AI 助手专门围绕本站内容回答：帮你判断学习起点、选择资源、拆解项目，还能快速找到常用的 AI 官网。</p>
+            <div class="ai-points"><span class="ai-point">学习路线建议</span><span class="ai-point">资源智能推荐</span><span class="ai-point">项目思路拆解</span></div>
+          </div>
+          <div class="ai-preview" aria-hidden="true">
+            <div class="ai-preview-top"><span class="ai-orb">✦</span><div><div class="ai-preview-title">学习路线 AI 助手</div><div class="ai-preview-status">网站知识库 · 随时可问</div></div></div>
+            <div class="ai-bubble">我零基础，应该从哪里开始？</div>
+            <div class="ai-bubble user">先从 C 语言入门，再按路线练习。</div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="section">
       <div class="section-head"><div><div class="kicker">Practice</div><h2>最后做一个综合项目</h2><p class="section-intro">把两条路线真正连起来，学习成果才会从知识点变成作品。</p></div></div>
       <div class="project-grid">
@@ -178,7 +244,7 @@
 
     <section class="section" id="resources">
       <div class="section-head"><div><div class="kicker">Library</div><h2>配套资源库</h2><p class="section-intro">按路线和资源类型筛选，先学当前阶段最需要的内容。</p></div><div class="section-note"><span id="visibleCount">0</span> / <span id="totalCount">0</span> 项资源</div></div>
-      <div class="tools"><label class="search"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="搜索课程、主题或平台" aria-label="搜索资源"></label><div class="filters" aria-label="资源分类"><button class="filter active" type="button" data-filter="全部">全部</button><button class="filter" type="button" data-filter="下位机">下位机</button><button class="filter" type="button" data-filter="上位机">上位机</button><button class="filter" type="button" data-filter="Linux">Linux</button><button class="filter" type="button" data-filter="工具">工具</button></div></div>
+      <div class="tools"><label class="search"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="搜索课程、主题或平台" aria-label="搜索资源"></label><div class="filters" aria-label="资源分类"><button class="filter active" type="button" data-filter="全部">全部</button><button class="filter" type="button" data-filter="下位机">下位机</button><button class="filter" type="button" data-filter="上位机">上位机</button><button class="filter" type="button" data-filter="Linux">Linux</button><button class="filter" type="button" data-filter="工具">工具</button><button class="filter" type="button" data-filter="AI">AI</button></div></div>
       <div class="resource-grid" id="resourceGrid">
         <a class="resource" href="https://www.bilibili.com/video/BV1dr4y1n7vA" target="_blank" rel="noopener" data-tags="下位机 课程 C语言 基础 编程"><div class="resource-top"><span class="source">Bilibili · 浙江大学</span><span class="tag">下位机</span></div><h3>翁恺教你 C 语言程序设计</h3><p>系统梳理语法和编程思维，适合复习与入门。</p><div class="more"><span>C 语言课程</span><span>↗</span></div></a>
         <a class="resource" href="https://www.bilibili.com/video/BV1Xa4y1k7LU" target="_blank" rel="noopener" data-tags="下位机 课程 C语言 基础 编程"><div class="resource-top"><span class="source">Bilibili · 黑马程序员</span><span class="tag">下位机</span></div><h3>C 语言零基础入门到精通</h3><p>从基础语法到项目练习，适合零基础跟学。</p><div class="more"><span>C 语言课程</span><span>↗</span></div></a>
@@ -205,12 +271,42 @@
         <a class="resource" href="https://learning.postman.com/" target="_blank" rel="noopener" data-tags="上位机 工具 API 接口 测试"><div class="resource-top"><span class="source">Postman</span><span class="tag">工具</span></div><h3>Postman Learning Center</h3><p>调试接口、保存请求和编写 API 测试。</p><div class="more"><span>API 工具</span><span>↗</span></div></a>
         <a class="resource" href="https://github.com/skills" target="_blank" rel="noopener" data-tags="工具 上位机 练习 GitHub 协作"><div class="resource-top"><span class="source">GitHub Skills</span><span class="tag">工具</span></div><h3>GitHub 实操课程</h3><p>通过真实仓库练习协作、Actions 和 Pages。</p><div class="more"><span>协作实践</span><span>↗</span></div></a>
         <a class="resource" href="https://stackoverflow.com/" target="_blank" rel="noopener" data-tags="上位机 社区 问题 编程"><div class="resource-top"><span class="source">Stack Overflow</span><span class="tag">上位机</span></div><h3>Stack Overflow</h3><p>搜索真实开发问题，练习定位原因和验证答案。</p><div class="more"><span>问题社区</span><span>↗</span></div></a>
+
+        <a class="resource ai-resource" href="https://chat.deepseek.com/" target="_blank" rel="noopener" data-tags="AI 国产 AI助手 大模型 文本"><div class="resource-top"><span class="source">DeepSeek</span><span class="tag">国产 AI</span></div><h3>DeepSeek</h3><p>适合代码分析、学习问答和复杂问题拆解。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://www.doubao.com/" target="_blank" rel="noopener" data-tags="AI 国产 AI助手 大模型 文本"><div class="resource-top"><span class="source">字节跳动</span><span class="tag">国产 AI</span></div><h3>豆包</h3><p>适合日常问答、写作、学习和内容整理。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://tongyi.aliyun.com/" target="_blank" rel="noopener" data-tags="AI 国产 AI助手 大模型 文本"><div class="resource-top"><span class="source">阿里云</span><span class="tag">国产 AI</span></div><h3>通义</h3><p>覆盖文本对话、代码辅助和办公创作场景。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://www.kimi.com/" target="_blank" rel="noopener" data-tags="AI 国产 AI助手 大模型 长文本"><div class="resource-top"><span class="source">Moonshot AI</span><span class="tag">国产 AI</span></div><h3>Kimi</h3><p>适合长文本阅读、资料整理和研究辅助。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://yuanbao.tencent.com/" target="_blank" rel="noopener" data-tags="AI 国产 AI助手 大模型 文本"><div class="resource-top"><span class="source">腾讯</span><span class="tag">国产 AI</span></div><h3>腾讯元宝</h3><p>适合日常对话、资料总结和办公辅助。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://chatglm.cn/" target="_blank" rel="noopener" data-tags="AI 国产 AI助手 大模型 文本"><div class="resource-top"><span class="source">智谱 AI</span><span class="tag">国产 AI</span></div><h3>智谱清言</h3><p>支持学习问答、写作和代码辅助。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://chatgpt.com/" target="_blank" rel="noopener" data-tags="AI 国外 AI助手 大模型 文本"><div class="resource-top"><span class="source">OpenAI</span><span class="tag">国外 AI</span></div><h3>ChatGPT</h3><p>通用文本对话、代码学习和项目思路辅助。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://claude.ai/" target="_blank" rel="noopener" data-tags="AI 国外 AI助手 大模型 文本"><div class="resource-top"><span class="source">Anthropic</span><span class="tag">国外 AI</span></div><h3>Claude</h3><p>适合长文本分析、写作和代码讨论。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://gemini.google.com/" target="_blank" rel="noopener" data-tags="AI 国外 AI助手 大模型 文本"><div class="resource-top"><span class="source">Google</span><span class="tag">国外 AI</span></div><h3>Gemini</h3><p>适合通用问答、学习辅助和多工具协作。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://copilot.microsoft.com/" target="_blank" rel="noopener" data-tags="AI 国外 AI助手 大模型 文本"><div class="resource-top"><span class="source">Microsoft</span><span class="tag">国外 AI</span></div><h3>Microsoft Copilot</h3><p>适合日常问答、办公和开发辅助。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://www.perplexity.ai/" target="_blank" rel="noopener" data-tags="AI 国外 AI助手 搜索 研究"><div class="resource-top"><span class="source">Perplexity</span><span class="tag">国外 AI</span></div><h3>Perplexity</h3><p>适合带来源的检索、资料对比和研究整理。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+
+        <a class="resource" href="https://www.voidtools.com/zh-cn/downloads/" target="_blank" rel="noopener" data-tags="工具 Windows 搜索 效率"><div class="resource-top"><span class="source">voidtools</span><span class="tag">工具</span></div><h3>Everything</h3><p>快速搜索电脑中的文件，适合整理工程资料和开发文件。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource" href="https://www.xshell.com/zh/free-for-home-school/" target="_blank" rel="noopener" data-tags="工具 Linux 终端 远程开发"><div class="resource-top"><span class="source">NetSarang</span><span class="tag">工具</span></div><h3>Xshell / Xftp</h3><p>用于 SSH 终端连接和文件传输，适合 Linux 与远程开发。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource" href="https://www.tbtool.cn/" target="_blank" rel="noopener" data-tags="工具 Windows 硬件 诊断"><div class="resource-top"><span class="source">图吧工具箱</span><span class="tag">工具</span></div><h3>图吧工具箱</h3><p>集合硬件检测、性能测试和系统维护工具。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource" href="https://ai-bot.cn/" target="_blank" rel="noopener" data-tags="AI 工具 AI导航 国产 国外"><div class="resource-top"><span class="source">AI 工具集</span><span class="tag">AI</span></div><h3>AI 工具箱</h3><p>集中浏览不同类型的 AI 工具和应用入口。</p><div class="more"><span>访问网站</span><span>↗</span></div></a>
+        <a class="resource" href="https://gitee.com/" target="_blank" rel="noopener" data-tags="工具 代码仓库 Git 协作 国产"><div class="resource-top"><span class="source">Gitee</span><span class="tag">工具</span></div><h3>Gitee 代码仓库</h3><p>托管代码、管理项目并参与国产开源协作。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource" href="https://github.com/" target="_blank" rel="noopener" data-tags="工具 代码仓库 Git 协作 国外"><div class="resource-top"><span class="source">GitHub</span><span class="tag">工具</span></div><h3>GitHub 代码仓库</h3><p>托管代码、查找开源项目并进行版本协作。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
+        <a class="resource ai-resource" href="https://huggingface.co/" target="_blank" rel="noopener" data-tags="AI 国外 AI平台 模型 开源"><div class="resource-top"><span class="source">Hugging Face</span><span class="tag">AI 平台</span></div><h3>Hugging Face</h3><p>探索开源模型、数据集和 AI 开发工具。</p><div class="more"><span>访问官网</span><span>↗</span></div></a>
       </div>
       <div class="empty" id="empty">没有找到匹配的资源，换一个关键词或分类试试。</div>
     </section>
   </main>
 
   <footer><div class="wrap">从 C 语言开始，把每一个知识点变成自己的作品。<strong> · QQ：3312546026</strong></div></footer>
+
+  <button class="ai-assistant-launcher" id="assistantLauncher" type="button" aria-controls="assistantPanel" aria-expanded="false"><span class="ai-orb">✦</span><span>问问 AI 助手</span></button>
+  <aside class="assistant-panel" id="assistantPanel" aria-label="学习路线 AI 助手" aria-hidden="true">
+    <div class="assistant-header"><div class="assistant-heading"><span class="ai-orb">✦</span><div><div class="assistant-name">学习路线 AI 助手</div><div class="assistant-status" id="assistantStatus">网站知识库模式</div></div></div><button class="assistant-close" id="assistantClose" type="button" aria-label="关闭 AI 助手">×</button></div>
+    <div class="assistant-messages" id="assistantMessages" aria-live="polite"><div class="assistant-message">你好，我可以根据本站的学习路线和资源，帮你选择起点、推荐工具、拆解项目。</div></div>
+    <div class="assistant-suggestions"><button class="assistant-suggestion" type="button">零基础从哪里开始？</button><button class="assistant-suggestion" type="button">怎么学 Python 和 OpenCV？</button><button class="assistant-suggestion" type="button">推荐几个 AI 官网</button></div>
+    <form class="assistant-composer" id="assistantForm"><textarea class="assistant-input" id="assistantInput" rows="1" placeholder="输入你的问题…" aria-label="输入问题"></textarea><button class="assistant-send" id="assistantSend" type="submit" aria-label="发送">↑</button></form>
+    <div class="assistant-footnote">回答来自本站知识库；接入在线 AI 后可获得更灵活的回答。</div>
+  </aside>
+  <script src="ai-config.js"></script>
   <script>
     const cards = [...document.querySelectorAll('.resource')];
     const filters = [...document.querySelectorAll('.filter')];
@@ -242,6 +338,80 @@
     search.addEventListener('input', applyFilter);
     totalCount.textContent = cards.length;
     applyFilter();
+
+    const assistantLauncher = document.querySelector('#assistantLauncher');
+    const assistantPanel = document.querySelector('#assistantPanel');
+    const assistantClose = document.querySelector('#assistantClose');
+    const assistantForm = document.querySelector('#assistantForm');
+    const assistantInput = document.querySelector('#assistantInput');
+    const assistantMessages = document.querySelector('#assistantMessages');
+    const assistantStatus = document.querySelector('#assistantStatus');
+    const assistantSend = document.querySelector('#assistantSend');
+    const assistantEndpoint = window.AI_ASSISTANT_ENDPOINT || '';
+    const assistantHistory = [];
+    const assistantKnowledge = `本站是一个上下位机学习资源库。下位机路线：C语言基础（有基础先复习，无基础先入门）→电工与电子技术→烙铁焊接→51单片机→PCB设计→STM32。上位机路线：Python与OpenCV一起学习→计算机视觉实战→YOLO环境配置→Java与Android Studio一起学习→Linux拓展。综合项目包括串口通信与数据采集、视觉识别与设备控制、Android移动端控制。本站还收录国产AI：DeepSeek、豆包、通义、Kimi、腾讯元宝、智谱清言；国外AI：ChatGPT、Claude、Gemini、Microsoft Copilot、Perplexity、Hugging Face；以及Everything、Xshell/Xftp、图吧工具箱、AI工具箱、Gitee、GitHub等常用工具。`;
+    if (assistantEndpoint) assistantStatus.textContent = '在线 AI 已连接';
+    function toggleAssistant(open) {
+      const next = typeof open === 'boolean' ? open : !assistantPanel.classList.contains('open');
+      assistantPanel.classList.toggle('open', next);
+      assistantPanel.setAttribute('aria-hidden', String(!next));
+      assistantLauncher.setAttribute('aria-expanded', String(next));
+      if (next) setTimeout(() => assistantInput.focus(), 180);
+    }
+    function addAssistantMessage(text, role = 'assistant') {
+      const node = document.createElement('div');
+      node.className = `assistant-message ${role}`;
+      node.textContent = text;
+      assistantMessages.appendChild(node);
+      assistantMessages.scrollTop = assistantMessages.scrollHeight;
+      return node;
+    }
+    function localAssistantReply(question) {
+      const q = question.toLowerCase();
+      if (q.includes('零基础') || q.includes('从哪里开始') || q.includes('起点') || q.includes('先学什么')) return '如果你是零基础，建议先学 C 语言：变量、流程控制、函数、数组、指针和结构体。之后进入电工电子、焊接、51 单片机、PCB 设计，再到 STM32。';
+      if (q.includes('有基础') || q.includes('复习')) return '有 C 语言基础的话，可以先复习指针、数组、函数、结构体和内存，再进入电工电子与 51 单片机。掌握 GPIO、定时器、中断和串口后，再做 PCB 和 STM32。';
+      if (q.includes('python') || q.includes('opencv') || q.includes('视觉') || q.includes('yolo')) return '上位机建议把 Python 和 OpenCV 放在一起学：先掌握 Python 基础，再做图像读写、颜色空间、滤波、轮廓和摄像头处理；随后配置 YOLO，完成一个视觉识别项目。';
+      if (q.includes('java') || q.includes('android')) return 'Java 和 Android Studio 建议一起推进：先学 Java 基础，再做 Android 界面、网络或串口通信，最后做一个能查看设备状态、发送控制指令的移动端。';
+      if (q.includes('ai') || q.includes('人工智能') || q.includes('官网')) return '国产 AI 可以看看 DeepSeek、豆包、通义、Kimi、腾讯元宝和智谱清言；国外 AI 可以看看 ChatGPT、Claude、Gemini、Copilot、Perplexity 和 Hugging Face。页面下方的 AI 分类可以直接访问。';
+      if (q.includes('工具') || q.includes('everything') || q.includes('xshell') || q.includes('图吧')) return '常用工具区已整理 Everything、Xshell/Xftp、图吧工具箱、AI 工具箱、Gitee 和 GitHub。你可以在资源库中搜索工具名称，或点击“工具”分类。';
+      if (q.includes('项目') || q.includes('练手')) return '推荐从“STM32 采集传感器数据 + Python 串口展示”开始；进阶可以做“OpenCV/YOLO 识别 + 下位机控制”，再用 Java/Android Studio 做手机端控制。';
+      return '我可以帮你规划学习顺序、推荐本站资源、介绍 AI 官网，或者拆解一个下位机与上位机综合项目。你可以试试问：“零基础从哪里开始？”';
+    }
+    async function getAssistantReply(question) {
+      if (!assistantEndpoint) return localAssistantReply(question);
+      const messages = [...assistantHistory, { role: 'user', content: question }].slice(-10);
+      const response = await fetch(assistantEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages, knowledge: assistantKnowledge }) });
+      if (!response.ok) throw new Error(`AI endpoint returned ${response.status}`);
+      const data = await response.json();
+      if (!data.reply) throw new Error('AI endpoint returned no reply');
+      return data.reply;
+    }
+    async function submitAssistantQuestion(question) {
+      const value = String(question || '').trim();
+      if (!value || assistantSend.disabled) return;
+      addAssistantMessage(value, 'user');
+      assistantHistory.push({ role: 'user', content: value });
+      assistantInput.value = '';
+      assistantInput.style.height = 'auto';
+      assistantSend.disabled = true;
+      const typing = addAssistantMessage('正在思考…', 'assistant typing');
+      try {
+        const reply = await getAssistantReply(value);
+        typing.remove();
+        addAssistantMessage(reply);
+        assistantHistory.push({ role: 'assistant', content: reply });
+      } catch (error) {
+        typing.remove();
+        addAssistantMessage('在线 AI 暂时不可用，我先用网站知识库回答：\n' + localAssistantReply(value));
+      } finally { assistantSend.disabled = false; assistantInput.focus(); }
+    }
+    assistantLauncher.addEventListener('click', () => toggleAssistant());
+    assistantClose.addEventListener('click', () => toggleAssistant(false));
+    document.querySelectorAll('.assistant-suggestion').forEach((button) => button.addEventListener('click', () => submitAssistantQuestion(button.textContent)));
+    assistantForm.addEventListener('submit', (event) => { event.preventDefault(); submitAssistantQuestion(assistantInput.value); });
+    assistantInput.addEventListener('input', () => { assistantInput.style.height = 'auto'; assistantInput.style.height = `${Math.min(assistantInput.scrollHeight, 110)}px`; });
+    assistantInput.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); assistantForm.requestSubmit(); } });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') toggleAssistant(false); });
   </script>
 </body>
 </html>
